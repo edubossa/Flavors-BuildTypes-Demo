@@ -1,0 +1,71 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+    defaultConfig {
+        applicationId "com.ews.flavors_buildtypes_demo"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    productFlavors {
+
+        pago {
+
+        }
+
+        gratis {
+            applicationIdSuffix = ".gratis"
+        }
+
+        demo {
+            applicationIdSuffix = ".demo"
+        }
+
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../.sign/app.keystore")
+            storePassword "storePassword"
+            keyAlias "keyAlias"
+            keyPassword "keyPassword"
+        }
+    }
+
+    buildTypes {
+
+        debug {
+            buildConfigField("String", "URL", "\"http://localhost/payment\"")
+        }
+
+        homologacao {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            buildConfigField("String", "URL", "\"http://192.160.20.10/payment\"")
+        }
+
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "URL", "\"http://gate2all/payment\"")
+        }
+    }
+}
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
+    compile 'com.android.support:design:25.3.1'
+    testCompile 'junit:junit:4.12'
+}
